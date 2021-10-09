@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launcher",
+            "type": "python",
+            "request": "launch",
+            "module": "launcher",
+            "env": {
+                "ASSETS_PATH": "${workspaceFolder}/assets/default"
+            }
+        }
+    ]
+}
