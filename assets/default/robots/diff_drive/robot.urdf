@@ -57,7 +57,7 @@
             </geometry>
         </collision>
 
-        <xacro:box_inertia m="800" w="0.31" d="0.42" h="0.18" />
+        <xacro:box_inertia m="15" w="0.31" d="0.42" h="0.18" />
     </link>
 
     <!-- Robot Footprint -->
@@ -146,21 +146,7 @@
             </material>
         </visual>
 
-        <xacro:sphere_inertia m="0.1" r="${(wheel_radius+wheel_zoff-(base_height/2))}" />
-    </link>
-
-    <link name="caster_rod2_left">
-        <visual>
-            <origin xyz="0 0 0" rpy="0 0 0" />
-            <geometry>
-                <box size="0.02 0.02 0.1" />
-            </geometry>
-            <material name="Cyan">
-                <color rgba="0 1.0 1.0 1.0" />
-            </material>
-        </visual>
-
-        <xacro:sphere_inertia m="0.1" r="${(wheel_radius+wheel_zoff-(base_height/2))}" />
+        <xacro:sphere_inertia m="0.5" r="${(wheel_radius+wheel_zoff-(base_height/2))}" />
     </link>
 
     <link name="front_caster">
@@ -172,36 +158,22 @@
           <color rgba="0 1.0 1.0 1.0"/>
         </material>
       </visual>
-  
+
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <sphere radius="${(wheel_radius+wheel_zoff-(base_height/2))}"/>
         </geometry>
       </collision>
-  
+
       <xacro:sphere_inertia m="0.5" r="${(wheel_radius+wheel_zoff-(base_height/2))}"/>
     </link>
-<!-- 
-    <joint name="caster_joint" type="fixed">
-        <parent link="base_link" />
-        <child link="front_caster" />
-        <origin xyz="0.14 0.0 ${-(base_height/2)}" rpy="0 0 0" />
-    </joint> -->
-
 
     <joint name="caster_joint" type="continuous">
         <parent link="caster_rod_left" />
-        <child link="caster_rod2_left" />
+        <child link="front_caster" />
         <origin xyz="0.0 0.0 ${-(base_height/2)}" rpy="0 0 0" />
         <axis xyz="0.0 1.0 0.0" />
-    </joint>
-
-    <joint name="caster_joint2" type="continuous">
-        <parent link="caster_rod2_left" />
-        <child link="front_caster" />
-        <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
-        <axis xyz="1.0 0.0 0.0" />
     </joint>
 
     <joint name="caster_rod_joint" type="continuous">
@@ -301,6 +273,34 @@
                 </linear_acceleration>
             </imu>
         </sensor>
+    </gazebo>
+
+    <gazebo>
+        <plugin name='diff_drive' filename='libgazebo_ros_diff_drive.so'>
+        <ros>
+            <namespace>/cake/wheels</namespace>
+        </ros>
+
+        <!-- wheels -->
+        <left_joint>drivewhl_l_joint</left_joint>
+        <right_joint>drivewhl_r_joint</right_joint>
+
+        <!-- kinematics -->
+        <wheel_separation>0.025</wheel_separation>
+        <wheel_diameter>0.2</wheel_diameter>
+
+        <!-- limits -->
+        <max_wheel_torque>20</max_wheel_torque>
+        <max_wheel_acceleration>1.0</max_wheel_acceleration>
+
+        <!-- output -->
+        <publish_odom>true</publish_odom>
+        <publish_odom_tf>true</publish_odom_tf>
+        <publish_wheel_tf>true</publish_wheel_tf>
+
+        <odometry_frame>odom</odometry_frame>
+        <robot_base_frame>base_link</robot_base_frame>
+        </plugin>
     </gazebo>
 
 </robot>
