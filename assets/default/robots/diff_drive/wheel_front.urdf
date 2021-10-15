@@ -41,7 +41,21 @@
             </material>
         </visual>
 
-        <xacro:sphere_inertia m="0.5" r="${(wheel_radius+wheel_zoff-(base_height/2))}" />
+        <xacro:sphere_inertia m="0.1" r="${(wheel_radius+wheel_zoff-(base_height/2))}" />
+    </link>
+
+    <link name="caster_rod2_left">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.02 0.02 0.1" />
+            </geometry>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0" />
+            </material>
+        </visual>
+
+        <xacro:sphere_inertia m="0.1" r="${(wheel_radius+wheel_zoff-(base_height/2))}" />
     </link>
 
     <link name="front_caster">
@@ -66,9 +80,16 @@
 
     <joint name="caster_joint" type="continuous">
         <parent link="caster_rod_left" />
-        <child link="front_caster" />
+        <child link="caster_rod2_left" />
         <origin xyz="0.0 0.0 ${-(base_height/2)}" rpy="0 0 0" />
         <axis xyz="0.0 1.0 0.0" />
+    </joint>
+
+    <joint name="caster_joint2" type="continuous">
+        <parent link="caster_rod2_left" />
+        <child link="front_caster" />
+        <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+        <axis xyz="1.0 0.0 0.0" />
     </joint>
 
     <joint name="caster_rod_joint" type="continuous">
