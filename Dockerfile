@@ -18,6 +18,18 @@ RUN bash -c "source /usr/share/gazebo/setup.sh && npm run deploy --- -m local"
 RUN apt-get install -y \
     ros-galactic-xacro \
     ros-galactic-robot-localization
+
+# Fetch gazebo models
+RUN mkdir -p /root/.gazebo/models && \
+    git clone --depth 1 -b master https://github.com/osrf/gazebo_models /root/.gazebo/models
+
+# Make gazebo models accessible to gzweb
+RUN rm -r /gzweb/http/client/assets/* && \
+    ln -sf /root/.gazebo/models/* /gzweb/http/client/assets/ && \
+    ls -d /gzweb/http/client/assets/*/ | xargs -I% mkdir -p %/meshes && \
+    ls -d /gzweb/http/client/assets/*/ | xargs -I% bash -c "ln -s %/materials/textures/* %/meshes/"
+RUN bash -c "source /usr/share/gazebo/setup.sh && npm run deploy --- -m local"
+
 COPY assets /assets
 COPY launcher /launcher
 
