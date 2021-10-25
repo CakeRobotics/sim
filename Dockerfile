@@ -19,10 +19,19 @@ RUN apt-get install -y \
     ros-galactic-xacro \
     ros-galactic-robot-localization
 COPY assets /assets
-COPY launcher /launcher
+COPY launcher /launcher/launcher
+
+# Create unprivileged user
+RUN useradd --create-home -s /bin/bash cake && \
+    chown -R cake:cake /launcher /gzweb
 
 # Config supervisord
 COPY supervisor.conf /etc/supervisor/supervisord.conf
 EXPOSE 8080
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+# Run
+COPY entrypoint.bash /entrypoint.bash
+USER cake
+RUN touch /launcher/logs /gzweb/logs
+# ENTRYPOINT sources /ros_entry into shell
+CMD ["bash", "/entrypoint.bash"]
