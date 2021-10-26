@@ -65,6 +65,7 @@ def generate_launch_description():
         launch.actions.ExecuteProcess(
             cmd=[
                 'gzserver',
+                '--pause',
                 '--verbose',
                 '-s', 'libgazebo_ros_factory.so',
                 # '-s', 'libgazebo_ros_diff_drive.so',
