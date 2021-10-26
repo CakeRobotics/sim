@@ -12,6 +12,7 @@ RUN git checkout gzweb_1.4.1
 RUN apt-get install -y nodejs npm
 RUN apt-get install -y python
 RUN apt-get install -y python3 python-is-python2
+RUN bash -c "git apply <(git show 9a24cfd340ffdcd0512bc257df3ff5e4d74b4691) # HTTPS SUPPORT"
 RUN bash -c "source /usr/share/gazebo/setup.sh && npm run deploy --- -m local"
 
 # Copy gzserver launcher
