@@ -8,10 +8,7 @@ from .find_default_asset_path import find_robot_path, find_world_path
 
 def generate_launch_description():
     config = collect_config()
-    if config['world'][0] == '/':
-        world_file = config['world']
-    else:
-        world_file = find_world_path(config['world'])
+    world_file = find_world_path(config['world'])
     urdf_file = find_robot_path(config['robot'])
     initial_pose = config['start']
 
