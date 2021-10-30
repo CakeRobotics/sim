@@ -8,7 +8,7 @@ def find_world_path(name):
     return find_asset('worlds', name, 'world.xml')
 
 def find_asset(category, name, basename):
-    default_assets_dir = environ.get('ASSETS_PATH') or '/assets/default'
+    default_assets_dir = environ.get('ASSETS_PATH') or '/sim/assets/default'
     category_dir = join(default_assets_dir, category)
     asset_dir = join(category_dir, name)
     main_file_dir = join(asset_dir, basename)
