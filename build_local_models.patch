@@ -1,0 +1,15 @@
+diff --git a/deploy.sh b/deploy.sh
+index 3c05b90..873a6f9 100755
+--- a/deploy.sh
++++ b/deploy.sh
+@@ -106,8 +106,8 @@ then
+   # If no arg given then download from gazebo_models repo
+   if [[ -z $LOCAL ]]
+   then
+-    echo -n "Downloading gazebo_models..."
+-    git clone https://github.com/osrf/gazebo_models.git
++    echo -n "Preparing gazebo_models..."
++    ln -s /home/cake/.gazebo/models ./gazebo_models
+ 
+     RETVAL=$?
+     if [ $RETVAL -ne 0 ]; then

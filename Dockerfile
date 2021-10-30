@@ -16,11 +16,19 @@ WORKDIR /sim
 # Fetch gzweb
 RUN git clone https://github.com/osrf/gzweb
 
+# Copy gazebo_models
+## NOTE: Download the models localy using this command:
+## `git clone --depth 1 -b master https://github.com/osrf/gazebo_models`
+RUN mkdir /home/cake/.gazebo
+COPY --chown=cake:cake gazebo_models /home/cake/.gazebo/models
+
 # Build gzweb
 WORKDIR /sim/gzweb
 RUN git checkout gzweb_1.4.1
 RUN bash -c "git apply <(git show 9a24cfd340ffdcd0512bc257df3ff5e4d74b4691) # HTTPS SUPPORT"
-RUN bash -c "source /usr/share/gazebo/setup.sh && npm run deploy --- -m local"
+COPY --chown=cake:cake build_local_models.patch ./build_local_models.patch
+RUN bash -c "git apply build_local_models.patch"
+RUN bash -c "source /usr/share/gazebo/setup.sh && npm run deploy --- -m"
 
 # Copy gzserver launcher
 COPY --chown=cake:cake assets /sim/assets
