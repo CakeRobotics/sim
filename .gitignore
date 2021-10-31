@@ -148,3 +148,4 @@ cython_debug/
 !**/03_modules/wheels
 docs/source/_build
 gazebo_models
+gazebo_models.fat
