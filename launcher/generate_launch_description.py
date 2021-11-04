@@ -70,6 +70,7 @@ def generate_launch_description():
                 'gzserver',
                 '--pause',
                 '--verbose',
+                '-s', 'libgazebo_ros_init.so',
                 '-s', 'libgazebo_ros_factory.so',
                 # '-s', 'libgazebo_ros_diff_drive.so',
                 # '-s', 'libgazebo_ros_imu_sensor.so',
