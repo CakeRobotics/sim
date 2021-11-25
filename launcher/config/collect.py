@@ -62,8 +62,8 @@ def load_env_config():
         config['world'] = environ['WORLD']
     if environ.get('START_XYZ'):
         x, y, z = map(float, environ['START_XYZ'].split(','))
-        config.update({'start_point': {'x': x, 'y': y, 'z': z}})
+        config.update({'start': {'x': x, 'y': y, 'z': z}})
     if environ.get('START_RPY'):
         R, P, Y = map(float, environ['START_RPY'].split(','))
-        config.update({'start_point': {'R': R, 'P': P, 'Y': Y}})
+        config.update({'start': {'R': R, 'P': P, 'Y': Y}})
     return config
