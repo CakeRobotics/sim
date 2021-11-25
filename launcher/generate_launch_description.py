@@ -15,8 +15,6 @@ def generate_launch_description():
     urdf_file = find_robot_path(config['robot'])
     initial_pose = config['start']
 
-    # pkg_share = launch_ros.substitutions.FindPackageShare(package='sam_bot_description').find('sam_bot_description')
-
     robot_state_publisher_node = launch_ros.actions.Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
@@ -40,13 +38,6 @@ def generate_launch_description():
             '-Y', str(initial_pose['Y']),
         ],
         output='screen'
-    )
-    robot_localization_node = launch_ros.actions.Node(
-         package='robot_localization',
-         executable='ekf_node',
-         name='ekf_filter_node',
-         output='screen',
-         parameters=['/home/isaac/.cache/paru/clone/ros2-foxy/src/ekf.yaml', {'use_sim_time': LaunchConfiguration('use_sim_time')}]
     )
 
     return launch.LaunchDescription([
@@ -72,8 +63,6 @@ def generate_launch_description():
                 '--verbose',
                 '-s', 'libgazebo_ros_init.so',
                 '-s', 'libgazebo_ros_factory.so',
-                # '-s', 'libgazebo_ros_diff_drive.so',
-                # '-s', 'libgazebo_ros_imu_sensor.so',
                 world_file
             ],
             output='screen'
@@ -81,5 +70,4 @@ def generate_launch_description():
         joint_state_publisher_node,
         robot_state_publisher_node,
         spawn_entity,
-        robot_localization_node,
     ])
