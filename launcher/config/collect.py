@@ -3,6 +3,7 @@ import os.path
 import yaml
 
 from ..find_default_asset_path import find_robot_path, find_world_path
+from ..deep_update import deep_update
 
 # This function collects simulation configuration from the following sources
 # (the later sources override previous ones):
@@ -18,27 +19,27 @@ def collect_config():
     config = {}
 
     # Load default config
-    config.update(load_default_config())
+    config = deep_update(config, load_default_config())
 
     # Load the config specified by user
-    config.update(load_yaml_config('/sim/config.yaml'))
-    config.update(load_yaml_config('./config.yaml'))
-    config.update(load_env_config())
+    config = deep_update(config, load_yaml_config('/sim/config.yaml'))
+    config = deep_update(config, load_yaml_config('./config.yaml'))
+    config = deep_update(config, load_env_config())
 
     # Load config specified by robot
     robot_dir = os.path.dirname(find_robot_path(config['robot']))
     robot_config_path = os.path.join(robot_dir, 'config.yaml')
-    config.update(load_yaml_config(robot_config_path))
+    config = deep_update(config, load_yaml_config(robot_config_path))
 
     # Load config specified by world
     world_dir = os.path.dirname(find_world_path(config['world']))
     world_config_path = os.path.join(world_dir, 'config.yaml')
-    config.update(load_yaml_config(world_config_path))
+    config = deep_update(config, load_yaml_config(world_config_path))
 
     # Load the config specified by user AGAIN (To override everything if needed)
-    config.update(load_yaml_config('/sim/config.yaml'))
-    config.update(load_yaml_config('./config.yaml'))
-    config.update(load_env_config())
+    config = deep_update(config, load_yaml_config('/sim/config.yaml'))
+    config = deep_update(config, load_yaml_config('./config.yaml'))
+    config = deep_update(config, load_env_config())
 
     return config
 
@@ -62,8 +63,8 @@ def load_env_config():
         config['world'] = environ['WORLD']
     if environ.get('START_XYZ'):
         x, y, z = map(float, environ['START_XYZ'].split(','))
-        config.update({'start': {'x': x, 'y': y, 'z': z}})
+        config = deep_update(config, {'start': {'x': x, 'y': y, 'z': z}})
     if environ.get('START_RPY'):
         R, P, Y = map(float, environ['START_RPY'].split(','))
-        config.update({'start': {'R': R, 'P': P, 'Y': Y}})
+        config = deep_update(config, {'start': {'R': R, 'P': P, 'Y': Y}})
     return config
