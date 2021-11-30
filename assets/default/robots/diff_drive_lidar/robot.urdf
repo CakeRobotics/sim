@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<robot name="sam_bot" xmlns:xacro="http://ros.org/wiki/xacro">
+    <origin xyz="0.0 0.0 0.2" rpy="0 0 0" />
+    <xacro:include filename="../diff_drive/robot.urdf"/>
+    <xacro:include filename="lidar.urdf"/>
+</robot>
